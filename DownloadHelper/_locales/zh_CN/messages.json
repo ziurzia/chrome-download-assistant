@@ -1,0 +1,15 @@
+﻿{
+  "name": {
+    "message": "下载助手",
+    "description": "Extension name in manifest."
+  },
+  "description": {
+    "message": "下载助手",
+    "description": "Extension description in manifest."
+  },
+  "default_title": {
+    "message": "下载助手",
+    "description": "Extension browser action tooltip text in manifest."
+  }
+}
+
