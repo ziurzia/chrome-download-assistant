@@ -1,0 +1,134 @@
+#drag_area { 
+  position: absolute; 
+  z-index: 9999; 
+  top:100px; 
+  left:150px; 
+  width:250px; 
+  height:100px; 
+}
+
+#drag_container { 
+	border: 1px solid #73ade7; 
+	cursor: move ; 
+	height: 100% ; 
+	margin: 0; 
+	overflow: hidden; 
+	padding: 0; 
+	position: relative ; 
+	width: 100%; 
+	z-index:9997;
+}
+
+#drag_area_protector {
+	top:0; 
+	left:0; 
+	width:100%; 
+	height:100%;
+	display:block; 
+	position:fixed; 
+	z_index:8500;
+}
+
+#drag_size { 
+	min-width:65px; 
+	height:18px; 
+	position:absolute; 
+	top: -13px; 
+	left:12px; 
+	color:#ffffff; 
+	background-color:#444444; 
+	text-align:center; 
+	font-family: verdana; 
+	font-weight:bold; 
+	line-height:18px; 
+	font-size:10px; 
+	padding-left:4px; 
+	padding-right:4px; 
+	z-index:9998; 
+}
+
+#drag_cancel, #drag_crop { 
+	cursor:pointer; 
+	height:22px; 
+	position:absolute ; 
+	background:#000000; 
+	color:#ffffff; 
+	font-family: verdana; 
+	font-weight:bold; 
+	line-height:22px; 
+	font-size:10px; 
+	z-index:9998
+}
+#drag_crop { 
+	bottom:-25px; 
+	right:10px; 
+	padding-left:10px; 
+	padding-right:10px;   
+}
+
+#drag_cancel { 
+	bottom:-25px; 
+	right:60px; 
+	padding-left:10px; 
+	padding-right:8px; 
+}
+
+#drag_shadow_top, #drag_shadow_bottom, #drag_shadow_left, #drag_shadow_right { 
+	opacity: 0.5; 
+	background-color: #000000; 
+	position: absolute; 
+	z-index:7000
+}
+
+#drag_shadow_top { 
+	left: 0px; 
+	top: 0px; 
+} 
+
+#drag_shadow_bottom { 
+	right: 0; 
+	bottom: 0; 
+} 
+
+#drag_shadow_left { 
+	bottom: 0; 
+	left: 0; 
+} 
+
+#drag_shadow_right { 
+	top: 0; 
+	right: 0; 
+}
+
+#drag_north_east, #drag_north_west, #drag_south_east, #drag_south_west  { 
+	border:1px solid #FFFFFF; 
+	background-color: #3aa5f4; 
+	height: 5px; 
+	position: absolute; 
+	width: 5px; 
+	z-index:9998; 
+}
+
+#drag_north_east { 
+	cursor: ne-resize ; 
+	right: -4px ; 
+	top: -3px; 
+} 
+
+#drag_north_west { 
+	cursor: nw-resize ; 
+	left: -3px ; 
+	top: -3px; 
+} 
+
+#drag_south_east { 
+	cursor: se-resize ; 
+	right: -4px ; 
+	bottom: -4px; 
+} 
+
+#drag_south_west { 
+	cursor: sw-resize ; 
+	left: -3px ; 
+	bottom: -4px; 
+}
