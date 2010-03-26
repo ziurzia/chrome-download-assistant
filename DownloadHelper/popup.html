@@ -1,0 +1,26 @@
+﻿<html>
+<head>
+<script>
+function init() {
+	if (eval(localStorage.thunder)) {
+		btnThunder.disabled = false;
+	}
+	if (eval(localStorage.flashget))	{
+		btnFlashget.disabled = false;
+	}
+}
+function downloadAllByThunder(){
+	chrome.tabs.executeScript(null, {code : 'downloadAllByThunder();'});
+}
+function downloadAllByFlashget(){
+	chrome.tabs.executeScript(null, {code : 'downloadAllByFlashget();'});
+}
+</script>
+</head>
+<body onload="init()">
+<input id="btnThunder" value="DownloadAllByThunder" disabled="true"
+	type="button" onclick="downloadAllByThunder()" />
+<input id="btnFlashget" value="DownloadAllByFlashget" disabled="true"
+	type="button" onclick="downloadAllByFlashget()" />
+</body>
+</html>
