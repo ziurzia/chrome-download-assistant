@@ -1,8 +1,0 @@
-{
-	"name": {"message": "网页截图"},
-	"description": {"message": "截取网页为图片，支持窗口截图，区域截图和整个网页截图三种方式。"},
-	"captureWindow": {"message": "窗口截图"},
-	"captureArea": {"message": "区域截图"},
-	"captureWebpage": {"message": "网页截图"},
-	"loading": {"message": "截图中，请稍后。。"}
-}

@@ -1,8 +1,0 @@
-{
-	"name": {"message": "Screenshot"},
-	"description": {"message": "Webpage Screenshot"},
-	"captureWindow": {"message": "Printscreen for Window"},
-	"captureArea": {"message": "Printscreen for Area"},
-	"captureWebpage": {"message": "Printscreen for Webpage"},
-	"loading": {"message": "Loading please wait..."}
-}
