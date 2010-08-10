@@ -89,9 +89,11 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
 chrome.browserAction.onClicked.addListener(function(tab) {
   if (localStorage.thunder == 'true' && localStorage.flashget == 'false') {
-      chrome.tabs.executeScript(tab.id, {code: 'downloadAllByThunder()'});
+      chrome.tabs.executeScript(tab.id,
+          {code: 'sendDownloadCommandToBg("ByThunder")'});
     } else if (localStorage.thunder == 'false' && localStorage.flashget == 'true') {
-      chrome.tabs.executeScript(tab.id, {code: 'downloadAllByFlashget()'});
+      chrome.tabs.executeScript(tab.id,
+          {code: 'sendDownloadCommandToBg("ByFlashget")'});
     }
 });
 
@@ -113,7 +115,8 @@ function addMyItemToContextMenu() {
          if (obj.frameUrl) {
            chrome.tabs.executeScript(null, {code: 'downloadAll("' + obj.frameUrl + '", "flashget")', allFrames: true})
          } else {
-           chrome.tabs.executeScript(null, {code: 'downloadAllByFlashget();'})
+           chrome.tabs.executeScript(null,
+               {code: 'sendDownloadCommandToBg("ByFlashget");'})
          }
        }});
   }
@@ -134,7 +137,8 @@ function addMyItemToContextMenu() {
          if (obj.frameUrl) {
            chrome.tabs.executeScript(null, {code: 'downloadAll("' + obj.frameUrl + '", "thunder")', allFrames: true})
          } else {
-           chrome.tabs.executeScript(null, {code: 'downloadAllByThunder();'})
+           chrome.tabs.executeScript(null,
+               {code: 'sendDownloadCommandToBg("ByThunder");'})
          }
 
         // chrome.tabs.executeScript(null, {code: 'downloadAll();', allFrames: true})
