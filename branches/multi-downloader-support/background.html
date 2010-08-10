@@ -54,11 +54,11 @@ function setPopupStatus() {
         var count = 0;
         if (localStorage.thunder == 'true') {
           count++;
-          browserActionTitle = chrome.i18n.getMessage('downloadAllByFlashget');
+          browserActionTitle = chrome.i18n.getMessage('downloadAllByThunder');
         }
         if (localStorage.flashget == 'true') {
           count++;
-          browserActionTitle = chrome.i18n.getMessage('downloadAllByThunder');
+          browserActionTitle = chrome.i18n.getMessage('downloadAllByFlashget');
         }
 //        if (localStorage.webThunder == 'true') {
 //          count++;
@@ -186,6 +186,7 @@ function init() {
         'downloader': localStorage.downloader,
         'contextmenu': localStorage.contextmenu,
         'flashget': localStorage.flashget,
+        'miniFlashget': localStorage.miniFlashget,
         'thunder': localStorage.thunder,
         'webThunder': localStorage.webThunder,
         'miniThunder': localStorage.miniThunder
