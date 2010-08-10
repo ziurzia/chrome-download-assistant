@@ -28,7 +28,7 @@
    "name": "__MSG_name__",
    "permissions": [ "tabs", "http://*/", "https://*/" ],
    "plugins": [ {
-      "path": "plugin/npdownload.dll"
+      "path": "plugin/npDownloadHelper.dll"
    } ],
    "options_page": "options.html"
 }
