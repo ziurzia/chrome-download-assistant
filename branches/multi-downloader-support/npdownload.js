@@ -129,8 +129,8 @@ function download(link) {
   if (event.ctrlKey) {
     return true;
   }
-  if (downloader == 'thunder' || downloader == 'flashget' ||
-      downloader == 'miniThunder') {
+  if (downloader == 'thunder' || downloader == 'miniFlashget' ||
+      downloader == 'flashget' || downloader == 'miniThunder') {
     var message_ = {command : '', content : ['', '', '']};
     message_.command = downloader;
     message_.content[0] = link.href;
