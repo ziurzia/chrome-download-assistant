@@ -19,13 +19,12 @@ var pluginobj = document.getElementById('pluginobj');
 // an "experimental" permission in manifest.json
 var useExperimentalAPI = false;
 
-// Check if Thunder/Flashget is enabled
+// Check if downloader is enabled
 
 function scanDownloader() {
   localStorage.flashget = checkObjectByNP('FlashGet');
   localStorage.miniFlashget = checkObjectByNP('miniFlashget');
   localStorage.thunder = checkObjectByNP('ThunderAgent.Agent.1');
-  //localStorage.webThunder = checkObjectByNP('ThunderServer.WebThunder.1');
   localStorage.miniThunder = checkObjectByNP('ToolbarThunder.DownloadAgent.1');
 
 }
@@ -36,54 +35,48 @@ function checkObjectByNP(progID) {
 
 function setPopupStatus() {
   scanDownloader();
-
   chrome.browserAction.setTitle({title: chrome.i18n.getMessage('tipUnable')});
   chrome.browserAction.setIcon(
       {path: chrome.extension.getURL('icon_19_disable.png')});
   chrome.browserAction.setPopup({popup: ''});
   chrome.tabs.getSelected(null, function(tab) {
-    chrome.tabs.sendRequest(tab.id, {msg: 'content_script_is_load'}, function(response) {
-      var browserActionTitle;
-      var setBrowserActionIcon = 'icon_19_disable.png';
-      var setPopupUrl = '';
-      console.log('msg' + response.msg);
-      if (response && response.msg == 'noLinks') {
-        browserActionTitle = chrome.i18n.getMessage('tipNolink');
-      } else if (response.msg == 'haveLinks') {
-        setBrowserActionIcon = 'icon_19.png';
-        var count = 0;
-        if (localStorage.thunder == 'true') {
-          count++;
-          browserActionTitle = chrome.i18n.getMessage('downloadAllByThunder');
+    chrome.tabs.executeScript(tab.id, {code: 'checkLinks()'}, function() {
+      chrome.extension.onRequest.addListener(function(request, sender, response) {
+        var browserActionTitle;
+        var setBrowserActionIcon = 'icon_19_disable.png';
+        var setPopupUrl = '';
+        if (request && request.msg == 'noLinks') {
+          browserActionTitle = chrome.i18n.getMessage('tipNolink');
+        } else if (request.msg == 'haveLinks') {
+          setBrowserActionIcon = 'icon_19.png';
+          var count = 0;
+          if (localStorage.thunder == 'true') {
+            count++;
+            browserActionTitle = chrome.i18n.getMessage('downloadAllByThunder');
+          }
+          if (localStorage.flashget == 'true') {
+            count++;
+            browserActionTitle = chrome.i18n.getMessage('downloadAllByFlashget');
+          }
+          if (count == 2) {
+            browserActionTitle = chrome.i18n.getMessage('downloadAllByThunderAndFlashget');
+            setPopupUrl = 'popup.html';
+          } else if (count == 0) {
+            setBrowserActionIcon = 'icon_19_disable.png';
+            browserActionTitle = chrome.i18n.getMessage('noDownloader');
+            chrome.browserAction.setIcon(
+                {path: chrome.extension.getURL('icon_19_disable.png')});
+          }
         }
-        if (localStorage.flashget == 'true') {
-          count++;
-          browserActionTitle = chrome.i18n.getMessage('downloadAllByFlashget');
-        }
-//        if (localStorage.webThunder == 'true') {
-//          count++;
-//          browserActionTitle = chrome.i18n.getMessage('downloadAllByWebThunder');
-//        }
-        if (count == 2) {
-          browserActionTitle = chrome.i18n.getMessage('downloadAllByThunderAndFlashget');
-          setPopupUrl = 'popup.html';
-        } else if (count == 0) {
-          setBrowserActionIcon = 'icon_19_disable.png';
-          browserActionTitle = chrome.i18n.getMessage('noDownloader');
-          chrome.browserAction.setIcon(
-              {path: chrome.extension.getURL('icon_19_disable.png')});
-        }
-      } else {}
-      //console.log('browserActionTitle: ' + browserActionTitle);
-      chrome.browserAction.setTitle({title: browserActionTitle});
-      chrome.browserAction.setIcon(
-          {path: chrome.extension.getURL(setBrowserActionIcon)});
-      chrome.browserAction.setPopup({popup: setPopupUrl});
+        chrome.browserAction.setTitle({title: browserActionTitle});
+        chrome.browserAction.setIcon(
+            {path: chrome.extension.getURL(setBrowserActionIcon)});
+        chrome.browserAction.setPopup({popup: setPopupUrl});
+      });
     });
   });
 }
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-
   setPopupStatus();
 });
 
@@ -140,8 +133,6 @@ function addMyItemToContextMenu() {
            chrome.tabs.executeScript(null,
                {code: 'sendDownloadCommandToBg("ByThunder");'})
          }
-
-        // chrome.tabs.executeScript(null, {code: 'downloadAll();', allFrames: true})
        }});
 
     downloaderName = chrome.i18n.getMessage('option');
@@ -160,7 +151,6 @@ function downloadLinkByFlashgetOrMiniFlashget(link, downloader) {
 }
 
 function downloadLinkByThunder(link) {
-  //thunderAgent.AddLink(link[0], link[1], link[2]);
   var thunderAgent = pluginobj.CreateObject('ThunderAgent.Agent.1');
   thunderAgent.AddTask5(link[0], '', '', '', '',
       -1, 0, -1,  '', '', '', 1, '', -1);
@@ -252,19 +242,6 @@ function init() {
         sendResponse(false);
     }
   });
-
-  function showPopup(links, frames) {
-    var array = [];
-    for(var i = 0; i < links.length; i++) {
-      array.push(links[i]);
-    }
-    console.log("array:" + array + ' - length:' + array.length + ' - frames:' + frames.length);
-  }
-
-  chrome.extension.onRequest.addListener(function(request, sender, response) {
-    if (request.command == 'getLinks')
-      showPopup(request.links, frames);
-  })
   
   chrome.extension.onConnect.addListener(function(port) {
     port.onMessage.addListener(function(message) {

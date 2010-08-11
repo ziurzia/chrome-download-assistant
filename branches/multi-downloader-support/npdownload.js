@@ -276,10 +276,11 @@ function downloadAll(url, downlaoder) {
 
 function checkLinks() {
   var links = getAllLink();
+  var msg = 'haveLinks'
   if (links.length < 1) {
-    return {msg: 'noLinks'};
+    msg = 'noLinks'
   }
-  return {msg: 'haveLinks'}
+  chrome.extension.sendRequest({msg: msg});
 }
 
 function sendDownloadCommandToBg(type) {
