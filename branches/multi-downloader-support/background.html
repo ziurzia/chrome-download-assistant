@@ -63,7 +63,15 @@ function setPopupStatus() {
             setPopupUrl = 'popup.html';
           } else if (count == 0) {
             setBrowserActionIcon = 'icon_19_disable.png';
-            browserActionTitle = chrome.i18n.getMessage('noDownloader');
+            if (!localStorage.miniFlashget && !localStorage.miniThunder) {
+              browserActionTitle = chrome.i18n.getMessage('noDownloader');
+            } else if (localStorage.miniFlashget && !localStorage.miniThunder) {
+              browserActionTitle = chrome.i18n.getMessage('noDownloader2');
+            } else if (!localStorage.miniFlashget && localStorage.miniThunder) {
+              browserActionTitle = chrome.i18n.getMessage('noDownloader3');
+            } else if (localStorage.miniFlashget && localStorage.miniThunder) {
+              browserActionTitle = chrome.i18n.getMessage('noDownloader4');
+            }
             chrome.browserAction.setIcon(
                 {path: chrome.extension.getURL('icon_19_disable.png')});
           }

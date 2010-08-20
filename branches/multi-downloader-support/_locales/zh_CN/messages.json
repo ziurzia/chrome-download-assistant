@@ -24,7 +24,10 @@
   "option": {"message": "设置"},
   "tipNolink": {"message": "此页面没有链接可供下载。"},
   "tipUnable": {"message": "此页面是特殊页面，无法使用下载助手。"},
-  "noDownloader": {"message": "您没有安装下载器，请安装快车或者迅雷后，刷新当前页面。"},
+  "noDownloader": {"message": "您未安装任何下载器。为使用下载全部链接功能，请安装快车或者迅雷，并刷新当前页面。"},
+  "noDownloader2": {"message": "您只安装了迷你快车。为使用下载全部链接功能，请安装快车或者迅雷，并刷新当前页面。"},
+  "noDownloader3": {"message": "您只安装了迷你迅雷。为使用下载全部链接功能，请安装快车或者迅雷，并刷新当前页面。"},
+  "noDownloader4": {"message": "您只安装了迷你快车和迷你迅雷。为使用下载全部链接功能，请安装快车或者迅雷，并刷新当前页面。"},
   "downloadAllByThunderAndFlashget": {"message": "使用快车/迅雷下载所有链接"},
   "saveAndClose": {"message": "保存并关闭"}
 }
