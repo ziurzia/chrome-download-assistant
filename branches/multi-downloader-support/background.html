@@ -63,13 +63,13 @@ function setPopupStatus() {
             setPopupUrl = 'popup.html';
           } else if (count == 0) {
             setBrowserActionIcon = 'icon_19_disable.png';
-            if (!localStorage.miniFlashget && !localStorage.miniThunder) {
+            if (localStorage.miniFlashget == 'false' && localStorage.miniThunder == 'false') {
               browserActionTitle = chrome.i18n.getMessage('noDownloader');
-            } else if (localStorage.miniFlashget && !localStorage.miniThunder) {
+            } else if (localStorage.miniFlashget == 'true' && localStorage.miniThunder == 'false') {
               browserActionTitle = chrome.i18n.getMessage('noDownloader2');
-            } else if (!localStorage.miniFlashget && localStorage.miniThunder) {
+            } else if (localStorage.miniFlashget == 'false' && localStorage.miniThunder == 'true') {
               browserActionTitle = chrome.i18n.getMessage('noDownloader3');
-            } else if (localStorage.miniFlashget && localStorage.miniThunder) {
+            } else if (localStorage.miniFlashget == 'true' && localStorage.miniThunder == 'true') {
               browserActionTitle = chrome.i18n.getMessage('noDownloader4');
             }
             chrome.browserAction.setIcon(
