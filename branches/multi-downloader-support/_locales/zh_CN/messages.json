@@ -1,7 +1,7 @@
 {
   "name": {"message": "下载助手（由Google提供）"},
   "default_title": {"message": "下载助手"},
-  "description": {"message": "使用快车（www.flashget.com）或迅雷（www.xunlei.com）下载网页链接。"},
+  "description": {"message": "使用快车、迷你快车、迅雷或迷你迅雷下载网页链接。"},
   "downloadAllByFlashget": {"message": "使用快车下载所有链接"},
   "downloadAllByThunder": {"message": "使用迅雷下载所有链接"},
   "mFlashget": {"message": "使用快车下载链接"},
