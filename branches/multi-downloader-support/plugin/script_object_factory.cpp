@@ -1,98 +1,98 @@
 #include "stdafx.h"
-#include "ScriptObjectFactory.h"
+#include "script_object_factory.h"
 
-NPClass CScriptObjectFactory::m_NPClass = {
+NPClass ScriptObjectFactory::npclass_ = {
   NP_CLASS_STRUCT_VERSION,
-  CScriptObjectFactory::allocate,
-  CScriptObjectFactory::deallocate,
-  CScriptObjectFactory::invalidate,
-  CScriptObjectFactory::hasMethod,
-  CScriptObjectFactory::invoke,
-  CScriptObjectFactory::invokeDefault,
-  CScriptObjectFactory::hasProperty,
-  CScriptObjectFactory::getProperty,
-  CScriptObjectFactory::setProperty,
-  CScriptObjectFactory::removeProperty,
-  CScriptObjectFactory::enumerate,
-  CScriptObjectFactory::construct
+  ScriptObjectFactory::Allocate,
+  ScriptObjectFactory::Deallocate,
+  ScriptObjectFactory::Invalidate,
+  ScriptObjectFactory::HasMethod,
+  ScriptObjectFactory::Invoke,
+  ScriptObjectFactory::InvokeDefault,
+  ScriptObjectFactory::HasProperty,
+  ScriptObjectFactory::GetProperty,
+  ScriptObjectFactory::SetProperty,
+  ScriptObjectFactory::RemoveProperty,
+  ScriptObjectFactory::Enumerate,
+  ScriptObjectFactory::Construct
 };
 
-CScriptObjectFactory::CScriptObjectFactory(void) {
+ScriptObjectFactory::ScriptObjectFactory(void) {
 }
 
-CScriptObjectFactory::~CScriptObjectFactory(void) {
+ScriptObjectFactory::~ScriptObjectFactory(void) {
 }
 
-CScriptObjectBase* CScriptObjectFactory::CreateObject(NPP npp,
-                                             NPAllocateFunctionPtr allocate) {
-  m_NPClass.allocate = allocate;
-  return (CScriptObjectBase*)NPN_CreateObject(npp,&m_NPClass);
+ScriptObjectBase* ScriptObjectFactory::CreateObject(NPP npp,
+    NPAllocateFunctionPtr allocate) {
+  npclass_.allocate = allocate;
+  return (ScriptObjectBase*)NPN_CreateObject(npp,&npclass_);
 }
 
-NPObject* CScriptObjectFactory::allocate(NPP npp, NPClass *aClass) {
+NPObject* ScriptObjectFactory::Allocate(NPP npp, NPClass *aClass) {
   return NULL;
 }
 
-void CScriptObjectFactory::deallocate(NPObject *npobj) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
+void ScriptObjectFactory::Deallocate(NPObject *npobj) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
   pObject->Deallocate();
 }
 
-void CScriptObjectFactory::invalidate(NPObject *npobj) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
+void ScriptObjectFactory::Invalidate(NPObject *npobj) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
   pObject->Invalidate();
 }
 
-bool CScriptObjectFactory::hasMethod(NPObject *npobj, NPIdentifier name) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
+bool ScriptObjectFactory::HasMethod(NPObject *npobj, NPIdentifier name) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
   return pObject->HasMethod(name);
 }
 
-bool CScriptObjectFactory::invoke(NPObject *npobj, NPIdentifier name,
-                                  const NPVariant *args, uint32_t argCount,
-                                  NPVariant *result) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
-  return pObject->Invoke(name,args,argCount,result);
+bool ScriptObjectFactory::Invoke(NPObject *npobj, NPIdentifier name,
+                                 const NPVariant *args, uint32_t argCount,
+                                 NPVariant *result) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
+  return pObject->Invoke(name, args, argCount, result);
 }
 
-bool CScriptObjectFactory::invokeDefault(NPObject *npobj,
-                                         const NPVariant *args,
-                                         uint32_t argCount,
-                                         NPVariant *result) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
-  return pObject->InvokeDefault(args,argCount,result);
+bool ScriptObjectFactory::InvokeDefault(NPObject *npobj,
+                                        const NPVariant *args,
+                                        uint32_t argCount,
+                                        NPVariant *result) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
+  return pObject->InvokeDefault(args, argCount, result);
 }
 
-bool CScriptObjectFactory::hasProperty(NPObject *npobj, NPIdentifier name) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
+bool ScriptObjectFactory::HasProperty(NPObject *npobj, NPIdentifier name) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
   return pObject->HasProperty(name);
 }
 
-bool CScriptObjectFactory::getProperty(NPObject *npobj, NPIdentifier name,
-                                       NPVariant *result) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
-  return pObject->GetProperty(name,result);
+bool ScriptObjectFactory::GetProperty(NPObject *npobj, NPIdentifier name,
+                                      NPVariant *result) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
+  return pObject->GetProperty(name, result);
 }
 
-bool CScriptObjectFactory::setProperty(NPObject *npobj, NPIdentifier name,
-                                       const NPVariant *value) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
-  return pObject->SetProperty(name,value);
+bool ScriptObjectFactory::SetProperty(NPObject *npobj, NPIdentifier name,
+                                      const NPVariant *value) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
+  return pObject->SetProperty(name, value);
 }
 
-bool CScriptObjectFactory::removeProperty(NPObject *npobj,NPIdentifier name) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
+bool ScriptObjectFactory::RemoveProperty(NPObject *npobj, NPIdentifier name) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
   return pObject->RemoveProperty(name);
 }
 
-bool CScriptObjectFactory::enumerate(NPObject *npobj, NPIdentifier **value,
-                                     uint32_t *count) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
-  return pObject->Enumerate(value,count);
+bool ScriptObjectFactory::Enumerate(NPObject *npobj, NPIdentifier **value,
+                                    uint32_t *count) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
+  return pObject->Enumerate(value, count);
 }
 
-bool CScriptObjectFactory::construct(NPObject *npobj,const NPVariant *args,
-                                     uint32_t argCount,NPVariant *result) {
-  CScriptObjectBase* pObject = (CScriptObjectBase*)npobj;
-  return pObject->Construct(args,argCount,result);
+bool ScriptObjectFactory::Construct(NPObject *npobj, const NPVariant *args,
+                                    uint32_t argCount, NPVariant *result) {
+  ScriptObjectBase* pObject = (ScriptObjectBase*)npobj;
+  return pObject->Construct(args, argCount, result);
 }

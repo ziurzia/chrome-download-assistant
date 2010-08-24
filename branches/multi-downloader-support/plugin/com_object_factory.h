@@ -1,12 +1,11 @@
 #pragma once
-#include "scriptobjectbase.h"
+#include "script_object_base.h"
 
-class CComObjectFactory :
-  public CScriptObjectBase
+class ComObjectFactory : public ScriptObjectBase
 {
 public:
-  CComObjectFactory(void);
-  ~CComObjectFactory(void);
+  ComObjectFactory(void);
+  ~ComObjectFactory(void);
 
   static NPObject* Allocate(NPP npp, NPClass *aClass); 
 

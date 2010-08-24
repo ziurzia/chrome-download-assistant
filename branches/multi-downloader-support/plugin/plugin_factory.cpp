@@ -1,24 +1,24 @@
 #include "stdafx.h"
-#include "PluginFactory.h"
-#include "ComPlugin.h"
+#include "plugin_factory.h"
+#include "com_plugin.h"
 
-CPluginFactory::CPluginFactory(void) {
-  memset(m_PluginTypeList,sizeof(m_PluginTypeList),0);
-  strcpy_s(m_PluginTypeList[0].szMIMEType,"application/x-npdownload");
-  m_PluginTypeList[0].constructor = &CComPlugin::CreateObject;
+PluginFactory::PluginFactory(void) {
+  memset(plugin_type_list_, sizeof(plugin_type_list_), 0);
+  strcpy_s(plugin_type_list_[0].mime_type, "application/x-npdownload");
+  plugin_type_list_[0].constructor = &ComPlugin::CreateObject;
 }
 
-CPluginFactory::~CPluginFactory(void) {
+PluginFactory::~PluginFactory(void) {
 
 }
 
-CPluginBase* CPluginFactory::NewPlugin(NPMIMEType pluginType) {
-  CPluginBase* pPlugin = NULL;
-  for(int i=0;i<MAX_PLUGIN_TYPE_COUNT;i++) {
-    if (m_PluginTypeList[i].szMIMEType == NULL)
+PluginBase* PluginFactory::NewPlugin(NPMIMEType pluginType) {
+  PluginBase* pPlugin = NULL;
+  for(int i = 0; i < MAX_PLUGIN_TYPE_COUNT; i++) {
+    if (plugin_type_list_[i].mime_type == NULL)
       break;
-    else if (_stricmp(pluginType,m_PluginTypeList[i].szMIMEType) == 0) {
-      pPlugin = (*m_PluginTypeList[i].constructor)();
+    else if (_stricmp(pluginType, plugin_type_list_[i].mime_type) == 0) {
+      pPlugin = (*plugin_type_list_[i].constructor)();
       break;
     }
   }

@@ -1,71 +1,74 @@
 #include "stdafx.h"
-#include "MiniFlashGetScriptObject.h"
+#include "miniflashget_script_object.h"
 #include "Log.h"
 #include "utils.h"
 
-extern CLog gLog;
+extern Log g_Log;
 
 const TCHAR* kMiniFlashGetProgID = L"BHO.IFlashGetNetscape";
 
-CMiniFlashGetScriptObject::CMiniFlashGetScriptObject(void) {
+MiniflashgetScriptObject::MiniflashgetScriptObject(void) {
 }
 
-CMiniFlashGetScriptObject::~CMiniFlashGetScriptObject(void) {
+MiniflashgetScriptObject::~MiniflashgetScriptObject(void) {
 }
 
-NPObject* CMiniFlashGetScriptObject::Allocate(NPP npp, NPClass *aClass) {
-  CMiniFlashGetScriptObject* pRet = new CMiniFlashGetScriptObject;
-  char szLog[256];
-  sprintf_s(szLog,"CMiniFlashGetScriptObject this=%ld",pRet);
-  gLog.WriteLog("Allocate",szLog);
+NPObject* MiniflashgetScriptObject::Allocate(NPP npp, NPClass *aClass) {
+  MiniflashgetScriptObject* pRet = new MiniflashgetScriptObject;
+  char logs[256];
+  sprintf_s(logs, "CMiniFlashGetScriptObject this=%ld", pRet);
+  g_Log.WriteLog("Allocate", logs);
   if (pRet != NULL) {
-    pRet->SetPlugin((CPluginBase*)npp->pdata);
+    pRet->SetPlugin((PluginBase*)npp->pdata);
     Function_Item item;
-    strcpy_s(item.szFunName,"AddLink");
-    item.FunPtr = ON_INVOKEHELPER(&CMiniFlashGetScriptObject::AddLink);
+    strcpy_s(item.function_name, "AddLink");
+    item.function_pointer = ON_INVOKEHELPER(&MiniflashgetScriptObject::AddLink);
     pRet->AddFunction(item);
-    strcpy_s(item.szFunName,"DownloadAll");
-    item.FunPtr = ON_INVOKEHELPER(&CMiniFlashGetScriptObject::DownloadAll);
+    strcpy_s(item.function_name, "DownloadAll");
+    item.function_pointer = ON_INVOKEHELPER(&MiniflashgetScriptObject::DownloadAll);
     pRet->AddFunction(item);
   }
   return pRet;
 }
 
-void CMiniFlashGetScriptObject::Deallocate() {
-  char szLog[256];
-  sprintf_s(szLog,"CMiniFlashGetScriptObject this=%ld",this);
-  gLog.WriteLog("Deallocate",szLog);
+void MiniflashgetScriptObject::Deallocate() {
+  char logs[256];
+  sprintf_s(logs, "CMiniFlashGetScriptObject this=%ld", this);
+  g_Log.WriteLog("Deallocate", logs);
   delete this;
 }
 
-void CMiniFlashGetScriptObject::Invalidate() {
+void MiniflashgetScriptObject::Invalidate() {
 
 }
 
-bool CMiniFlashGetScriptObject::Construct(const NPVariant *args,uint32_t argCount,
-                                      NPVariant *result) {
+bool MiniflashgetScriptObject::Construct(const NPVariant *args,
+                                         uint32_t argCount,
+                                         NPVariant *result) {
   return true;
 }
 
-bool CMiniFlashGetScriptObject::CheckObject(const NPVariant* args,uint32_t argCount,
-                                            NPVariant* result) {
+bool MiniflashgetScriptObject::CheckObject(const NPVariant* args,
+                                           uint32_t argCount,
+                                           NPVariant* result) {
   BOOLEAN_TO_NPVARIANT(false,*result);
 
   CLSID clsid;
-  HRESULT hr = CLSIDFromProgID(kMiniFlashGetProgID,&clsid);
+  HRESULT hr = CLSIDFromProgID(kMiniFlashGetProgID, &clsid);
   TCHAR* pClssID;
-  StringFromCLSID(clsid,&pClssID);
+  StringFromCLSID(clsid, &pClssID);
   _bstr_t bstr(pClssID);
-  gLog.WriteLog("CLSIDFromProgID",bstr);
+  g_Log.WriteLog("CLSIDFromProgID", bstr);
   if (SUCCEEDED(hr)) {
-    BOOLEAN_TO_NPVARIANT(true,*result);
+    BOOLEAN_TO_NPVARIANT(true, *result);
   }
 
   return true;
 }
 
-bool CMiniFlashGetScriptObject::AddLink(const NPVariant* args,uint32_t argCount,
-                                        NPVariant* result) {
+bool MiniflashgetScriptObject::AddLink(const NPVariant* args,
+                                       uint32_t argCount,
+                                       NPVariant* result) {
   if (argCount != 3 || !NPVARIANT_IS_STRING(args[0]) ||
     !NPVARIANT_IS_STRING(args[1]) || !NPVARIANT_IS_STRING(args[2]))
     return false;
@@ -99,8 +102,9 @@ bool CMiniFlashGetScriptObject::AddLink(const NPVariant* args,uint32_t argCount,
   return true;
 }
 
-bool CMiniFlashGetScriptObject::DownloadAll(const NPVariant* args,uint32_t argCount,
-                                            NPVariant* result) {
+bool MiniflashgetScriptObject::DownloadAll(const NPVariant* args, 
+                                           uint32_t argCount,
+                                           NPVariant* result) {
   if (argCount == 0 || !NPVARIANT_IS_STRING(args[0]) ||
     !NPVARIANT_IS_INT32(args[argCount - 1]))
     return false;
@@ -108,7 +112,7 @@ bool CMiniFlashGetScriptObject::DownloadAll(const NPVariant* args,uint32_t argCo
   // build array
   SAFEARRAY *psa = Utils::CreateArray(argCount - 1);
   COleVariant var;
-  for (long i = 0 ; i < long(argCount - 1) ; i++) {
+  for (long i = 0; i < long(argCount - 1); i++) {
     if (NPVARIANT_IS_STRING(args[i])) {
       var.SetString(
         Utils::Utf8ToUnicode(

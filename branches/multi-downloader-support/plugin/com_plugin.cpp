@@ -1,42 +1,43 @@
 #include "StdAfx.h"
-#include "ComPlugin.h"
-#include "ComObjectFactory.h"
-#include "ScriptObjectFactory.h"
+#include "com_plugin.h"
+#include "com_object_factory.h"
+#include "script_object_factory.h"
 #include "Log.h"
 
-extern CLog gLog;
+extern Log g_Log;
 
-CComPlugin::CComPlugin(void)
+ComPlugin::ComPlugin(void)
 {
 }
 
-CComPlugin::~CComPlugin(void)
+ComPlugin::~ComPlugin(void)
 {
 }
 
-NPError CComPlugin::Init(NPP instance, uint16_t mode, int16_t argc,
-                         char *argn[], char *argv[], 
-                         NPSavedData *saved) {
-  m_ScriptObject = NULL;
+NPError ComPlugin::Init(NPP instance, uint16_t mode, int16_t argc,
+                        char *argn[], char *argv[], 
+                        NPSavedData *saved) {
+  scriptobject_ = NULL;
   instance->pdata = this;
-  return CPluginBase::Init(instance,mode,argc,argn,argv,saved);
+  return PluginBase::Init(instance, mode, argc, argn, argv, saved);
 }
 
-NPError CComPlugin::UnInit(NPSavedData **save) {
-  CPluginBase::UnInit(save);
-  m_ScriptObject = NULL;
+NPError ComPlugin::UnInit(NPSavedData **save) {
+  PluginBase::UnInit(save);
+  scriptobject_ = NULL;
   return NPERR_NO_ERROR;
 }
 
-NPError CComPlugin::GetValue(NPPVariable variable, void *value) {
+NPError ComPlugin::GetValue(NPPVariable variable, void *value) {
   switch(variable) {
     case NPPVpluginScriptableNPObject:
-      if (m_ScriptObject == NULL) {
-        m_ScriptObject = CScriptObjectFactory::CreateObject(m_NPP,CComObjectFactory::Allocate);
-        gLog.WriteLog("GetValue","GetValue");
+      if (scriptobject_ == NULL) {
+        scriptobject_ = ScriptObjectFactory::CreateObject(get_npp(), 
+            ComObjectFactory::Allocate);
+        g_Log.WriteLog("GetValue","GetValue");
       }
-      if (m_ScriptObject != NULL) {
-        *(NPObject**)value = m_ScriptObject;
+      if (scriptobject_ != NULL) {
+        *(NPObject**)value = scriptobject_;
       }
       else
         return NPERR_OUT_OF_MEMORY_ERROR;

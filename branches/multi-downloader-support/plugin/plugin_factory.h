@@ -1,24 +1,24 @@
 #pragma once
 
-#include "pluginbase.h"
+#include "plugin_base.h"
 
-typedef CPluginBase* (*ConstructorPtr)();
+typedef PluginBase* (*ConstructorPtr)();
 #define MAX_PLUGIN_TYPE_COUNT 10
 
-class CPluginFactory
+class PluginFactory
 {
 public:
-  CPluginFactory(void);
-  ~CPluginFactory(void);
+  PluginFactory(void);
+  ~PluginFactory(void);
 
-  CPluginBase* NewPlugin(NPMIMEType pluginType);
+  PluginBase* NewPlugin(NPMIMEType pluginType);
 
 private:
   struct Plugin_Type_Item {
-    char szMIMEType[128];
+    char mime_type[128];
     ConstructorPtr constructor;
   };
 
-  Plugin_Type_Item m_PluginTypeList[MAX_PLUGIN_TYPE_COUNT];
+  Plugin_Type_Item plugin_type_list_[MAX_PLUGIN_TYPE_COUNT];
 
 };

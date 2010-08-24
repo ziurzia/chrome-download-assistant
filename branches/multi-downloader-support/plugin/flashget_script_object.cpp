@@ -1,69 +1,69 @@
 #include "StdAfx.h"
-#include "FlashGetScriptObject.h"
+#include "flashget_script_object.h"
 #include "Log.h"
 #include "flashget.h"
 
-extern CLog gLog;
+extern Log g_Log;
 
-CFlashGetScriptObject::CFlashGetScriptObject(void)
+FlashGetScriptObject::FlashGetScriptObject(void)
 {
 }
 
-CFlashGetScriptObject::~CFlashGetScriptObject(void)
+FlashGetScriptObject::~FlashGetScriptObject(void)
 {
 }
 
-NPObject* CFlashGetScriptObject::Allocate(NPP npp, NPClass *aClass) {
-  CFlashGetScriptObject* pRet = new CFlashGetScriptObject;
-  char szLog[256];
-  sprintf_s(szLog,"CFlashGetScriptObject this=%ld",pRet);
-  gLog.WriteLog("Allocate",szLog);
+NPObject* FlashGetScriptObject::Allocate(NPP npp, NPClass *aClass) {
+  FlashGetScriptObject* pRet = new FlashGetScriptObject;
+  char logs[256];
+  sprintf_s(logs, "CFlashGetScriptObject this=%ld", pRet);
+  g_Log.WriteLog("Allocate", logs);
   if (pRet != NULL) {
-    pRet->SetPlugin((CPluginBase*)npp->pdata);
+    pRet->SetPlugin((PluginBase*)npp->pdata);
     Function_Item item;
-    strcpy_s(item.szFunName,"IsEnabled");
-    item.FunPtr = ON_INVOKEHELPER(&CFlashGetScriptObject::IsEnabled);
+    strcpy_s(item.function_name, "IsEnabled");
+    item.function_pointer = ON_INVOKEHELPER(&FlashGetScriptObject::IsEnabled);
     pRet->AddFunction(item);
-    strcpy_s(item.szFunName,"AddLink");
-    item.FunPtr = ON_INVOKEHELPER(&CFlashGetScriptObject::AddLink);
+    strcpy_s(item.function_name, "AddLink");
+    item.function_pointer = ON_INVOKEHELPER(&FlashGetScriptObject::AddLink);
     pRet->AddFunction(item);
-    strcpy_s(item.szFunName,"DownloadAll");
-    item.FunPtr = ON_INVOKEHELPER(&CFlashGetScriptObject::DownloadAll);
+    strcpy_s(item.function_name, "DownloadAll");
+    item.function_pointer = ON_INVOKEHELPER(&FlashGetScriptObject::DownloadAll);
     pRet->AddFunction(item);
   }
   return pRet;
 }
 
-void CFlashGetScriptObject::Deallocate() {
-  char szLog[256];
-  sprintf_s(szLog,"CFlashGetScriptObject this=%ld",this);
-  gLog.WriteLog("Deallocate",szLog);
+void FlashGetScriptObject::Deallocate() {
+  char logs[256];
+  sprintf_s(logs, "CFlashGetScriptObject this=%ld", this);
+  g_Log.WriteLog("Deallocate", logs);
   delete this;
 }
 
-void CFlashGetScriptObject::Invalidate() {
+void FlashGetScriptObject::Invalidate() {
 
 }
 
-bool CFlashGetScriptObject::Construct(const NPVariant *args,uint32_t argCount,
-                                      NPVariant *result) {
+bool FlashGetScriptObject::Construct(const NPVariant *args, uint32_t argCount,
+                                     NPVariant *result) {
   return true;
 }
 
-bool CFlashGetScriptObject::IsEnabled(const NPVariant* args,uint32_t argCount,
-                                      NPVariant* result) {
-  FlashgetSupport::IsEnabled(NULL,args,argCount,result);
+bool FlashGetScriptObject::IsEnabled(const NPVariant* args, uint32_t argCount,
+                                     NPVariant* result) {
+  FlashgetSupport::IsEnabled(NULL, args, argCount, result);
   return true;
 }
 
-bool CFlashGetScriptObject::AddLink(const NPVariant* args,uint32_t argCount,
-                                    NPVariant* result) {
-  FlashgetSupport::AddLink(NULL,args,argCount,result);
+bool FlashGetScriptObject::AddLink(const NPVariant* args, uint32_t argCount,
+                                   NPVariant* result) {
+  FlashgetSupport::AddLink(NULL, args, argCount, result);
   return true;
 }
 
-bool CFlashGetScriptObject::DownloadAll(const NPVariant* args,uint32_t argCount,
-                                        NPVariant* result) {
-  FlashgetSupport::DownloadAll(NULL,args,argCount,result);
+bool FlashGetScriptObject::DownloadAll(const NPVariant* args, uint32_t argCount,
+                                       NPVariant* result) {
+  FlashgetSupport::DownloadAll(NULL, args, argCount, result);
   return true;
 }

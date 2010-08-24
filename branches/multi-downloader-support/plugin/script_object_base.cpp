@@ -1,22 +1,22 @@
 #include "stdafx.h"
-#include "ScriptObjectBase.h"
+#include "script_object_base.h"
 
-CScriptObjectBase::CScriptObjectBase(void) {
+ScriptObjectBase::ScriptObjectBase(void) {
 }
 
-CScriptObjectBase::~CScriptObjectBase(void) {
+ScriptObjectBase::~ScriptObjectBase(void) {
 }
 
-void CScriptObjectBase::SetPlugin(CPluginBase* p) {
-  m_Plugin = p;
+void ScriptObjectBase::SetPlugin(PluginBase* p) {
+  plugin_ = p;
 }
 
-bool CScriptObjectBase::HasMethod(NPIdentifier name) {
+bool ScriptObjectBase::HasMethod(NPIdentifier name) {
   bool bRet = false;
   vector<Function_Item>::iterator iter;
   char* szName = NPN_UTF8FromIdentifier(name);
-  for (iter = m_FunList.begin();iter != m_FunList.end();iter++) {
-    if (strcmp((const char*)iter->szFunName,szName) == 0) {
+  for (iter = function_list_.begin(); iter != function_list_.end(); iter++) {
+    if (strcmp((const char*)iter->function_name, szName) == 0) {
       bRet = true;
       break;
     }
@@ -26,14 +26,14 @@ bool CScriptObjectBase::HasMethod(NPIdentifier name) {
   return bRet;
 }
 
-bool CScriptObjectBase::Invoke(NPIdentifier name,const NPVariant *args, 
-                               uint32_t argCount,NPVariant *result) {
+bool ScriptObjectBase::Invoke(NPIdentifier name,const NPVariant *args, 
+                              uint32_t argCount,NPVariant *result) {
   bool bRet = false;
   vector<Function_Item>::iterator iter;
   char* szName = NPN_UTF8FromIdentifier(name);
-  for (iter = m_FunList.begin();iter != m_FunList.end();iter++) {
-   if (strcmp((const char*)iter->szFunName,szName) == 0) {
-     bRet = (this->*(iter->FunPtr))(args,argCount,result);
+  for (iter = function_list_.begin(); iter != function_list_.end(); iter++) {
+   if (strcmp((const char*)iter->function_name, szName) == 0) {
+     bRet = (this->*(iter->function_pointer))(args, argCount, result);
      break;
    }
   }
@@ -42,17 +42,17 @@ bool CScriptObjectBase::Invoke(NPIdentifier name,const NPVariant *args,
   return bRet;
 }
 
-bool CScriptObjectBase::InvokeDefault(const NPVariant *args,uint32_t argCount,
-                                      NPVariant *result) {
+bool ScriptObjectBase::InvokeDefault(const NPVariant *args,uint32_t argCount,
+                                     NPVariant *result) {
   return false;
 }
 
-bool CScriptObjectBase::HasProperty(NPIdentifier name) {
+bool ScriptObjectBase::HasProperty(NPIdentifier name) {
   bool bRet = false;
   vector<Property_Item>::iterator iter;
   char* szName = NPN_UTF8FromIdentifier(name);
-  for (iter = m_PropList.begin();iter != m_PropList.end();iter++) {
-    if (strcmp((const char*)iter->szPropName,szName) == 0) {
+  for (iter = property_list_.begin(); iter != property_list_.end(); iter++) {
+    if (strcmp((const char*)iter->property_name, szName) == 0) {
       bRet = true;
       break;
     }
@@ -62,12 +62,12 @@ bool CScriptObjectBase::HasProperty(NPIdentifier name) {
   return bRet;
 }
 
-bool CScriptObjectBase::GetProperty(NPIdentifier name,NPVariant *result) {
+bool ScriptObjectBase::GetProperty(NPIdentifier name, NPVariant *result) {
   bool bRet = false;
   vector<Property_Item>::iterator iter;
   char* szName = NPN_UTF8FromIdentifier(name);
-  for (iter = m_PropList.begin();iter != m_PropList.end();iter++) {
-    if (strcmp((const char*)iter->szPropName,szName) == 0) {
+  for (iter = property_list_.begin(); iter != property_list_.end(); iter++) {
+    if (strcmp((const char*)iter->property_name, szName) == 0) {
       bRet = true;
       *result = iter->value;
       break;
@@ -78,13 +78,13 @@ bool CScriptObjectBase::GetProperty(NPIdentifier name,NPVariant *result) {
   return bRet;
 }
 
-bool CScriptObjectBase::SetProperty(NPIdentifier name,
-                                    const NPVariant *value) {
+bool ScriptObjectBase::SetProperty(NPIdentifier name,
+                                   const NPVariant *value) {
   bool bRet = false;
   vector<Property_Item>::iterator iter;
   char* szName = NPN_UTF8FromIdentifier(name);
-  for (iter = m_PropList.begin();iter != m_PropList.end();iter++) {
-    if (strcmp((const char*)iter->szPropName,szName) == 0) {
+  for (iter = property_list_.begin(); iter != property_list_.end(); iter++) {
+    if (strcmp((const char*)iter->property_name, szName) == 0) {
       bRet = true;
       iter->value = *value;
       break;
@@ -94,14 +94,14 @@ bool CScriptObjectBase::SetProperty(NPIdentifier name,
     NPN_MemFree(szName);
   return bRet;
 }
-bool CScriptObjectBase::RemoveProperty(NPIdentifier name) {
+bool ScriptObjectBase::RemoveProperty(NPIdentifier name) {
   bool bRet = false;
   vector<Property_Item>::iterator iter;
   char* szName = NPN_UTF8FromIdentifier(name);
-  for (iter = m_PropList.begin();iter != m_PropList.end();iter++) {
-    if (strcmp((const char*)iter->szPropName,szName) == 0) {
+  for (iter = property_list_.begin(); iter != property_list_.end(); iter++) {
+    if (strcmp((const char*)iter->property_name, szName) == 0) {
       bRet = true;
-      m_PropList.erase(iter);
+      property_list_.erase(iter);
       break;
     }
   }
@@ -109,15 +109,15 @@ bool CScriptObjectBase::RemoveProperty(NPIdentifier name) {
     NPN_MemFree(szName);
   return bRet;
 }
-bool CScriptObjectBase::Enumerate(NPIdentifier **value,uint32_t *count) {
+bool ScriptObjectBase::Enumerate(NPIdentifier **value, uint32_t *count) {
 //  *count = m_PropList.size() + m_FunList.size();
   return true;
 }
 
-void CScriptObjectBase::AddProperty(Property_Item& item) {
-  m_PropList.push_back(item);
+void ScriptObjectBase::AddProperty(Property_Item& item) {
+  property_list_.push_back(item);
 }
 
-void CScriptObjectBase::AddFunction(Function_Item& item) {
-  m_FunList.push_back(item);
+void ScriptObjectBase::AddFunction(Function_Item& item) {
+  function_list_.push_back(item);
 }
