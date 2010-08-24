@@ -178,19 +178,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\ComObjectFactory.cpp"
+				RelativePath=".\com_object_factory.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ComObjectWapper.cpp"
+				RelativePath=".\com_object_wapper.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ComPlugin.cpp"
+				RelativePath=".\com_plugin.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Dll_Entry.cpp"
+				RelativePath=".\dll_entry.cpp"
 				>
 			</File>
 			<File
@@ -198,15 +198,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FlashGetScriptObject.cpp"
+				RelativePath=".\flashget_script_object.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Log.cpp"
+				RelativePath=".\log.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MiniFlashGetScriptObject.cpp"
+				RelativePath=".\miniflashget_script_object.cpp"
 				>
 			</File>
 			<File
@@ -214,27 +214,27 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NPN_Entry.cpp"
+				RelativePath=".\npn_entry.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NPP_Entry.cpp"
+				RelativePath=".\npp_entry.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\PluginBase.cpp"
+				RelativePath=".\plugin_base.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\PluginFactory.cpp"
+				RelativePath=".\plugin_factory.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ScriptObjectBase.cpp"
+				RelativePath=".\script_object_base.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ScriptObjectFactory.cpp"
+				RelativePath=".\script_object_factory.cpp"
 				>
 			</File>
 			<File
@@ -248,15 +248,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\ComObjectFactory.h"
+				RelativePath=".\com_object_factory.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ComObjectWapper.h"
+				RelativePath=".\com_object_wapper.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ComPlugin.h"
+				RelativePath=".\com_plugin.h"
 				>
 			</File>
 			<File
@@ -264,23 +264,23 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FlashGetScriptObject.h"
+				RelativePath=".\flashget_script_object.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Log.h"
+				RelativePath=".\log.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MiniFlashGetScriptObject.h"
+				RelativePath=".\miniflashget_script_object.h"
 				>
 			</File>
 			<File
-				RelativePath=".\PluginBase.h"
+				RelativePath=".\plugin_base.h"
 				>
 			</File>
 			<File
-				RelativePath=".\PluginFactory.h"
+				RelativePath=".\plugin_factory.h"
 				>
 			</File>
 			<File
@@ -288,11 +288,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ScriptObjectBase.h"
+				RelativePath=".\script_object_base.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ScriptObjectFactory.h"
+				RelativePath=".\script_object_factory.h"
 				>
 			</File>
 			<File
