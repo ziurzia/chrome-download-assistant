@@ -1,49 +1,49 @@
 #include "stdafx.h"
 #include "Log.h"
 
-CLog::CLog(void)
+Log::Log(void)
 {
-  m_File = NULL;
+  file_ = NULL;
 }
 
-CLog::~CLog(void)
+Log::~Log(void)
 {
-  if (m_File != NULL)
+  if (file_ != NULL)
     CloseLog();
 }
 
-bool CLog::OpenLog(LPCSTR header)
+bool Log::OpenLog(LPCSTR header)
 {
-  if (m_File != NULL)
+  if (file_ != NULL)
     return false;
 
-  char szFileName[MAX_PATH];
-  GetLocalTime(&m_Time);
-  sprintf_s(szFileName,"D:\\Log\\%s_%d%02d%02d_%d.log",
-          header,m_Time.wYear,m_Time.wMonth,m_Time.wDay,
-          GetProcessId(GetCurrentProcess()));
-  m_File = fopen(szFileName,"a");
-  if (m_File == NULL)
+  char filename[MAX_PATH];
+  GetLocalTime(&time_);
+  sprintf_s(filename, "D:\\Log\\%s_%d%02d%02d_%d.log",
+            header, time_.wYear, time_.wMonth, time_.wDay,
+            GetProcessId(GetCurrentProcess()));
+  file_ = fopen(filename, "a");
+  if (file_ == NULL)
     return false;
   else
     return true;
 }
 
-bool CLog::WriteLog(LPCSTR title, LPCSTR contents)
+bool Log::WriteLog(LPCSTR title, LPCSTR contents)
 {
-  if (m_File == NULL)
+  if (file_ == NULL)
   {
     return false;
   }
 
-  GetLocalTime(&m_Time);
-  sprintf_s(m_Buffer,"[%02d:%02d:%02d %03d] [%s] %s\n",
-          m_Time.wHour,m_Time.wMinute,m_Time.wSecond,m_Time.wMilliseconds,
-    title,contents);
-  int nLen = strlen(m_Buffer);
-  if (fwrite(m_Buffer,nLen,1,m_File) == 1)
+  GetLocalTime(&time_);
+  sprintf_s(buffer_, "[%02d:%02d:%02d %03d] [%s] %s\n",
+            time_.wHour, time_.wMinute, time_.wSecond, time_.wMilliseconds,
+            title, contents);
+  int nLen = strlen(buffer_);
+  if (fwrite(buffer_, nLen, 1, file_) == 1)
   {
-    fflush(m_File);
+    fflush(file_);
     return true;
   }
   else
@@ -52,11 +52,11 @@ bool CLog::WriteLog(LPCSTR title, LPCSTR contents)
   }
 }
 
-bool CLog::CloseLog()
+bool Log::CloseLog()
 {
-  if (m_File != NULL) {
-    fclose(m_File);
-    m_File = NULL;
+  if (file_ != NULL) {
+    fclose(file_);
+    file_ = NULL;
   }
   return true;
 }

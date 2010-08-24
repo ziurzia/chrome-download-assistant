@@ -3,18 +3,18 @@
 #include <stdio.h>
 #include <windows.h>
 
-class CLog
+class Log
 {
 public:
-  CLog(void);
-  ~CLog(void);
+  Log(void);
+  ~Log(void);
 
   bool OpenLog(LPCSTR header);
-  bool WriteLog(LPCSTR title,LPCSTR contents);
+  bool WriteLog(LPCSTR title, LPCSTR contents);
   bool CloseLog();
 
 private:
-  FILE* m_File;
-  char m_Buffer[2048];
-  SYSTEMTIME m_Time;
+  FILE* file_;
+  char buffer_[2048];
+  SYSTEMTIME time_;
 };
