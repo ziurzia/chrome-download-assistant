@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="npDownloadHelper"
+	Name="download_helper"
 	ProjectGUID="{530F5475-0691-4E25-9535-1FD27A5FB9E1}"
 	RootNamespace="npDownloadHelper"
 	Keyword="Win32Proj"
@@ -65,7 +65,7 @@
 				IgnoreImportLibrary="false"
 				LinkIncremental="2"
 				IgnoreDefaultLibraryNames=""
-				ModuleDefinitionFile="npDownloadHelper.def"
+				ModuleDefinitionFile="download_helper.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -139,7 +139,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames=""
-				ModuleDefinitionFile="npDownloadHelper.def"
+				ModuleDefinitionFile="download_helper.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\download_helper.def"
+				>
+			</File>
+			<File
 				RelativePath=".\flashget.cpp"
 				>
 			</File>
@@ -207,10 +211,6 @@
 			</File>
 			<File
 				RelativePath=".\miniflashget_script_object.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\npDownloadHelper.def"
 				>
 			</File>
 			<File
@@ -310,7 +310,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\npDownloadHelper.rc"
+				RelativePath=".\download_helper.rc"
 				>
 			</File>
 		</Filter>
