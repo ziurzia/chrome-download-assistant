@@ -8,23 +8,23 @@ Log g_Log;
 
 extern NPNetscapeFuncs* g_NpnFuncs;
 
-//BOOL OSCALL DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved) {
-//  g_hMod = hModule;
-//  switch(reason) {
-//    case DLL_PROCESS_ATTACH:
-//      g_Log.OpenLog("NPAPI");
-//      g_Log.WriteLog("Msg","DLL_PROCESS_ATTACH");
-//      break;
-//    case DLL_THREAD_ATTACH:
-//      break;
-//    case DLL_THREAD_DETACH:
-//      break;
-//    case DLL_PROCESS_DETACH:
-//      g_Log.WriteLog("Msg","DLL_PROCESS_DETACH");
-//      break;
-//  }
-//  return TRUE;
-//}
+BOOL OSCALL DllMain(HMODULE hModule, DWORD reason, LPVOID lpReserved) {
+  g_hMod = hModule;
+  switch(reason) {
+    case DLL_PROCESS_ATTACH:
+      g_Log.OpenLog("NPAPI");
+      g_Log.WriteLog("Msg","DLL_PROCESS_ATTACH");
+      break;
+    case DLL_THREAD_ATTACH:
+      break;
+    case DLL_THREAD_DETACH:
+      break;
+    case DLL_PROCESS_DETACH:
+      g_Log.WriteLog("Msg","DLL_PROCESS_DETACH");
+      break;
+  }
+  return TRUE;
+}
 
 #ifdef __cplusplus
 extern "C" {
@@ -67,7 +67,6 @@ NPError OSCALL NP_Initialize(NPNetscapeFuncs* npnf
 #if !defined(_WINDOWS) && !defined(WEBKIT_DARWIN_SDK)
                  NP_GetEntryPoints(nppfuncs);
 #endif
-                 g_Log.OpenLog("NPAPI");
                  return NPERR_NO_ERROR;
 }
 
