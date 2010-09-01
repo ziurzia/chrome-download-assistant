@@ -17,7 +17,7 @@ var pluginobj = document.getElementById('pluginobj');
 
 // When using experimental API, change this flag to true, and add
 // an "experimental" permission in manifest.json
-var useExperimentalAPI = false;
+var useExperimentalAPI = true;
 
 // Check if downloader is enabled
 
@@ -42,7 +42,7 @@ function setPopupStatus() {
   chrome.tabs.getSelected(null, function(tab) {
     chrome.tabs.executeScript(tab.id, {code: 'checkLinks()'}, function() {
       chrome.extension.onRequest.addListener(function(request, sender, response) {
-        var browserActionTitle;
+        var browserActionTitle = '';
         var setBrowserActionIcon = 'icon_19_disable.png';
         var setPopupUrl = '';
         if (request && request.msg == 'noLinks') {
@@ -102,55 +102,93 @@ function addMyItemToContextMenu() {
   var downloaderName;
   if (eval(localStorage.flashget)) {
     downloaderName = chrome.i18n.getMessage('mFlashget');
-    chrome.experimental.contextMenu.create(
-        {'title': downloaderName,
-         'contexts': ['LINK'],
-         'onclick': function(obj){
-           pluginobj.flashgetAddLink(obj.linkUrl, '', obj.mainFrameUrl);
-         }});
+    chrome.contextMenus.create(
+        {title: downloaderName,
+         contexts: ['link'],
+         onclick: function(info, tab){
+           var link = ['','',''];
+           link[0] = info.linkUrl;
+           link[1] = info.selectionText || ' ';
+           link[2] = info. pageUrl ;
+           downloadLinkByFlashgetOrMiniFlashget(link, 'flashget');
+        }}, function() {});
     downloaderName = chrome.i18n.getMessage('downloadAllByFlashget');
-    chrome.experimental.contextMenu.create(
-      {'title': downloaderName,
-       'contexts': ['ALL'],
-       'onclick': function(obj) {
-         if (obj.frameUrl) {
-           chrome.tabs.executeScript(null, {code: 'downloadAll("' + obj.frameUrl + '", "flashget")', allFrames: true})
+    chrome.contextMenus.create(
+      {title: downloaderName,
+       contexts: ['all'],
+       onclick: function(info, tab) {
+         if (info.frameUrl) {
+           chrome.tabs.executeScript(null, {code: 'checkFrameByUrlAndDown("' +
+               info.frameUrl + '", "flashget")', allFrames: true})
          } else {
            chrome.tabs.executeScript(null,
                {code: 'sendDownloadCommandToBg("ByFlashget");'})
          }
        }});
   }
+
+  if (eval(localStorage.miniFlashget)) {
+    downloaderName = chrome.i18n.getMessage('mMiniFlashget');
+    chrome.contextMenus.create(
+        {title: downloaderName,
+         contexts: ['link'],
+         onclick: function(info, tab){
+           var link = ['','',''];
+           link[0] = info.linkUrl;
+           link[1] = info.selectionText || ' ';
+           link[2] = info. pageUrl ;
+           downloadLinkByFlashgetOrMiniFlashget(link, 'miniFlashget');
+        }}, function() {});
+  }
   if (eval(localStorage.thunder)) {
     downloaderName = chrome.i18n.getMessage('mThunder');
-    chrome.experimental.contextMenu.create(
-        {'title': downloaderName,
-         'contexts': ['LINK'],
-         'onclick': function(obj) {
-           pluginobj.thunderAddLink(obj.linkUrl, '', obj.mainFrameUrl);
+    chrome.contextMenus.create(
+        {title: downloaderName,
+         contexts: ['link'],
+         onclick: function(info, tab) {
+           var link = ['','',''];
+           link[0] = info.linkUrl;
+           link[1] = info.selectionText || ' ';
+           link[2] = info. pageUrl ;
+           downloadLinkByThunder(link);
          }});
 
     downloaderName = chrome.i18n.getMessage('downloadAllByThunder');
-    chrome.experimental.contextMenu.create(
-      {'title': downloaderName,
-       'contexts': ['ALL'],
-       'onclick': function(obj) {
-         if (obj.frameUrl) {
-           chrome.tabs.executeScript(null, {code: 'downloadAll("' + obj.frameUrl + '", "thunder")', allFrames: true})
+    chrome.contextMenus.create(
+      {title: downloaderName,
+       contexts: ['all'],
+       onclick: function(info, tab) {
+         if (info.frameUrl) {
+           chrome.tabs.executeScript(null, {code: 'checkFrameByUrlAndDown("' +
+               info.frameUrl + '", "thunder")', allFrames: true});
          } else {
            chrome.tabs.executeScript(null,
-               {code: 'sendDownloadCommandToBg("ByThunder");'})
+               {code: 'sendDownloadCommandToBg("ByThunder");'});
          }
        }});
-
-    downloaderName = chrome.i18n.getMessage('option');
-    chrome.experimental.contextMenu.create(
-      {'title': downloaderName,
-       'contexts': ['ALL'],
-       'onclick': function() {
-            chrome.tabs.create({'url': 'options.html'})
-            }});
   }
+  if (eval(localStorage.miniThunder)) {
+    downloaderName = chrome.i18n.getMessage('mMiniThunder');
+    chrome.contextMenus.create(
+        {title: downloaderName,
+         contexts: ['link'],
+         onclick: function(info, tab){
+           var link = ['','',''];
+           link[0] = info.linkUrl;
+           link[1] = info.selectionText || ' ';
+           link[2] = info. pageUrl ;
+           downloadLinkByMiniThunder(link);
+        }}, function() {});
+  }
+
+  downloaderName = chrome.i18n.getMessage('option');
+  chrome.contextMenus.create(
+    {title: downloaderName,
+     contexts: ['all'],
+     onclick: function(info, tab) {
+       chrome.tabs.create({'url': 'options.html'});
+     }});
+
 }
 
 function downloadLinkByFlashgetOrMiniFlashget(link, downloader) {
@@ -207,7 +245,7 @@ function init() {
   chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     switch(request.command) {
       case 'isUseExperimentalAPI':
-        sendResponse({'useExperimentalAPI': useExperimentalAPI});
+        sendResponse({useExperimentalAPI: useExperimentalAPI});
         break;
       case 'update':
         localStorage.contextmenu = (localStorage.contextmenu == "" ?

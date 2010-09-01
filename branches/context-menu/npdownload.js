@@ -264,11 +264,11 @@ function getAllLink() {
   return ret_;
 }
 
-function downloadAll(url, downlaoder) {
+function checkFrameByUrlAndDown(url, downloader) {
   if (url == location.href) {
-    if (downlaoder == 'thunder') {
+    if (downloader == 'thunder') {
       sendDownloadCommandToBg('thunder');
-    } else if (downlaoder == 'flashget') {
+    } else if (downloader == 'flashget') {
       downloadAllByFlashget();
     }
   }

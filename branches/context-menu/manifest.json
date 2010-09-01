@@ -27,7 +27,7 @@
       "128": "icon_128.png"
    },
    "options_page": "options.html",
-   "permissions": [ "tabs", "http://*/", "https://*/" ],
+   "permissions": [ "tabs", "http://*/", "https://*/", "contextMenus" ],
    "plugins": [ {
       "path": "plugin/download_helper.dll"
    } ]
