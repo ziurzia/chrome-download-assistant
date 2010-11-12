@@ -1,5 +1,5 @@
 var plugin = document.getElementById('pluginId');
-var useContextMenuAPI = false;
+var useContextMenuAPI = true;
 localStorage['defaultDownloader'] = localStorage['defaultDownloader'] || 'chrome_downloader';
 localStorage['contextMenu'] = localStorage['contextMenu'] || 'true';
 
@@ -19,6 +19,7 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
     case 'qq_whirlwind':
     case 'emule':
     case 'orbit':
+    case 'idm':
       downloaderManager.downloader(request.msg, request.link, plugin, request.pageUrl).download();
       break;
     case 'copyLink':

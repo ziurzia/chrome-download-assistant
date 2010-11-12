@@ -4,6 +4,7 @@
 #include "script_object_factory.h"
 #include "com_object_wapper.h"
 #include <comdef.h>
+#include "Internet_download_manager.h"
 
 extern Log g_Log;
 
@@ -58,6 +59,11 @@ bool ComObjectFactory::CheckObject(const NPVariant *args, uint32_t argCount,
     const char* prog_id = NPVARIANT_TO_STRING(args[0]).UTF8Characters;
     g_Log.WriteLog("ProgID", prog_id);
 
+    if (stricmp(prog_id, "DownlWithIDM.LinkProcessor") == 0) {
+      BOOLEAN_TO_NPVARIANT(InternetDownloadManager::CheckObject(), *result);
+      return true;
+    }
+
     TCHAR wchar_prog_id[256];
     MultiByteToWideChar(CP_UTF8, 0, prog_id, -1, wchar_prog_id, 256);
     CLSID clsid;
@@ -84,6 +90,13 @@ bool ComObjectFactory::CreateObject(const NPVariant *args, uint32_t argCount,
     const char* pProgID = NPVARIANT_TO_STRING(args[0]).UTF8Characters;
 
     g_Log.WriteLog("ProgID", pProgID);
+    if (stricmp(pProgID, "DownlWithIDM.LinkProcessor") == 0) {
+      ScriptObjectBase* pObject = (ScriptObjectBase*)ScriptObjectFactory::
+          CreateObject(plugin_->get_npp(), InternetDownloadManager::Allocate);
+      OBJECT_TO_NPVARIANT(pObject, *result);
+      return true;
+    }
+
     TCHAR progID[256];
     MultiByteToWideChar(CP_UTF8, 0, pProgID, -1, progID, 256);
     IDispatch* pInterface;

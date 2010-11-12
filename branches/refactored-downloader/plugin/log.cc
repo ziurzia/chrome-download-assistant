@@ -16,7 +16,7 @@ bool Log::OpenLog(LPCSTR header) {
 
   char filename[MAX_PATH];
   GetLocalTime(&time_);
-  sprintf_s(filename, "D:\\Log\\%s_%d%02d%02d_%d.log",
+  sprintf_s(filename, "C:\\Log\\%s_%d%02d%02d_%d.log",
             header, time_.wYear, time_.wMonth, time_.wDay,
             GetCurrentProcessId());
   file_ = fopen(filename, "a");

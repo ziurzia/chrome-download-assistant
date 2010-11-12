@@ -185,6 +185,18 @@ Orbit.prototype.downloadAll = function() {
   this.orbit.downloadList(urls, texts, this.pageUrl, "");
 }
 
+function IDM(link, plugin, progId, pageUrl) {
+  this.pageUrl = pageUrl;
+  IDM.superClass.constructor.apply(this, arguments);
+  this.idm = this.createNpObjectInstance();
+}
+
+extend(IDM, Downloader);
+IDM.prototype.download = function() {
+  var linkObj = IDM.superClass.download.call(this);
+  this.idm.Download(linkObj.url);
+}
+
 var downloaderManager = {}
 
 downloaderManager.supportDownloader = [
@@ -195,6 +207,7 @@ downloaderManager.supportDownloader = [
   {name: 'qq_whirlwind', showName: 'menu_qq_whirlwind', showName2:'download_all_with_qq_whirlwind', progId: 'QQIEHelper.QQRightClick.2', privateLink: '', supportDownloadAll: true, image: 'images/icon_qq.png'},
   {name: 'emule', showName: 'menu_emule', showName2:'download_all_with_emule', progId: 'IE2EM.IE2EMUrlTaker', privateLink: 'ed2k://', supportDownloadAll: false, image: 'images/icon_emule.png'},
   {name: 'orbit', showName: 'menu_orbit', showName2:'download_all_with_orbit', progId: 'Orbitmxt.Orbit', privateLink: '', supportDownloadAll: true, image: 'images/icon_orbit.png'},
+  {name: 'idm', showName: 'menu_idm', showName2: 'download_all_with_idm', progId: 'DownlWithIDM.LinkProcessor', privateLink: '', supportDownloadAll: false, image: 'images/icon_orbit.png'},
   {name: 'chrome_downloader', showName: 'menu_chrome', isSystem: true, supportDownloadAll: false, image: 'images/icon_chrome.png'}
 ]
 
@@ -221,6 +234,9 @@ downloaderManager.downloader = function(mode, link, plugin, pageUrl) {
       break;
     case 'orbit':
       downloader = new Orbit(link, plugin, 'Orbitmxt.Orbit', pageUrl);
+      break;
+    case 'idm':
+      downloader = new IDM(link, plugin, 'DownlWithIDM.LinkProcessor', pageUrl);
       break;
   }
   return downloader;

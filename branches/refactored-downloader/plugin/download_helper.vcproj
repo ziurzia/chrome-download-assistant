@@ -199,6 +199,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Internet_download_manager.cc"
+				>
+			</File>
+			<File
 				RelativePath=".\log.cc"
 				>
 			</File>
@@ -246,6 +250,10 @@
 			</File>
 			<File
 				RelativePath=".\com_plugin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Internet_download_manager.h"
 				>
 			</File>
 			<File
