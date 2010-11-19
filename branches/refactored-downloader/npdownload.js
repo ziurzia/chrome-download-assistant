@@ -33,16 +33,6 @@ var npDownload = {
     return ret_;
   },
 
-  checkPageLink: function() {
-    var links = this.getPageLink();
-    var message = 'noLink';
-    if (links.length > 0) {
-      message = 'existLink';
-    }
-    console.log('message:' + message);
-    this.sendRequest({msg: message}, function(){});
-  },
-
   trim: function(str) {
     return str.replace(/(^\s*)|(\s*$)/g, '').replace(/\n/g, ' ').replace(/\r/g, ' ').replace(/"/g,'\\\"');
   },
@@ -218,7 +208,6 @@ var npDownload = {
   init: function() {
     this.loadContextMenuCss();
     this.onRequest();
-    this.checkPageLink();
     this.sendRequest({msg: 'init_loaded'}, function(response) {
       if (response) {
         npDownload.contextMenu = eval(response.contextMenu);

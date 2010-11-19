@@ -32,10 +32,6 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
     case 'downloadAll':
       downloaderManager.downloader(request.downloader, request.links, plugin, request.pageUrl).downloadAll();
       break;
-    case 'noLink':
-    case 'existLink':
-      setPopupStatus(request.msg);
-      break;
   }
 });
 
@@ -55,60 +51,9 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
     });
     setTimeout(function() {
       eval(js);
-      initBrowserAction();
       chrome.tabs.executeScript(tabId, {code: 'npDownload.checkPageLink()'});
     }, 500);
  });
-
-function initBrowserAction() {
-  chrome.browserAction.setTitle({title: chrome.i18n.getMessage('tip_special')});
-  chrome.browserAction.setIcon(
-      {path: chrome.extension.getURL('images/icon_19_disable.png')});
-  chrome.browserAction.setPopup({popup: ''});
-
-}
-
-function setPopupStatus(status) {
-  var browserActionTitle = 'tip_special';
-  var setBrowserActionIcon = 'images/icon_19_disable.png';
-  var setPopupUrl = '';
-  var existDownloader = '';
-  if (status == 'noLink') {
-    browserActionTitle = 'tip_no_link';
-  } else if (status == 'existLink') {
-    var enableDownloaders = downloaderManager.getEnableDownloader(plugin);
-    var supportDownloadAllCount = 0;
-    browserActionTitle = 'tip_no_downloader';
-    for(var i = 0; i < enableDownloaders.length; i ++) {
-      var downloader = enableDownloaders[i];
-      if (!downloader.isSystem) {
-        if (downloader.supportDownloadAll) {
-          setBrowserActionIcon = 'images/icon_19.png';
-          browserActionTitle = downloader.showName2;
-          existDownloader = downloader.name;
-          supportDownloadAllCount++;
-        } else if (supportDownloadAllCount == 0){
-          browserActionTitle = downloader.showName2;
-        }
-      }
-    }
-
-    if (supportDownloadAllCount > 1) {
-      browserActionTitle = 'download_all';
-      setPopupUrl = 'popup.html';
-    } else if (supportDownloadAllCount == 1) {
-      chrome.browserAction.onClicked.addListener(function(tab) {
-        chrome.tabs.executeScript(tab.id,
-             {code: 'npDownload.sendDownloadAllCommandToBg("' + existDownloader + '")'});
-      });
-    }
-    chrome.browserAction.setTitle(
-        {title: chrome.i18n.getMessage(browserActionTitle)});
-    chrome.browserAction.setIcon(
-        {path: chrome.extension.getURL(setBrowserActionIcon)});
-    chrome.browserAction.setPopup({popup: setPopupUrl});
-  }
-}
 
 if (useContextMenuAPI) {
  createContextMenu(plugin);
@@ -155,5 +100,3 @@ function contextMenuDownloadAll(title, downloader) {
     }
   }});
 }
-
-initBrowserAction();

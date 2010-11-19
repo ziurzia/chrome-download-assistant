@@ -78,15 +78,26 @@ MiniThunder.prototype.download = function() {
  */
 function Flashget(link, plugin, progId, pageUrl) {
   this.pageUrl = pageUrl;
+  this.version = '3.x';
   Flashget.superClass.constructor.apply(this, arguments);
   this.flashget = this.createNpObjectInstance();
+  if (!this.flashget) {
+    this.version = '1.x';
+    this.progId = 'JetCar.Netscape';
+    this.flashget = this.createNpObjectInstance();
+  }
 }
 
 extend(Flashget, Downloader);
 
 Flashget.prototype.download = function() {
   var linkObj = Flashget.superClass.download.call(this);
-  this.flashget.AddUrlEx(linkObj.url, linkObj.text, linkObj.pageUrl, "FlashGet3",'', 0, 3 ); 
+  if (this.version == '3.x') {
+    this.flashget.AddUrlEx(linkObj.url, linkObj.text, linkObj.pageUrl, "FlashGet3",'', 0, 3 );
+  } else if (this.version == '1.x') {
+    this.flashget.AddUrl(linkObj.url, linkObj.text, linkObj.pageUrl);
+  }
+
 }
 
 Flashget.prototype.downloadAll = function() {
@@ -99,7 +110,11 @@ Flashget.prototype.downloadAll = function() {
     newLinks.push(url);
     newLinks.push(text);
   }
-  this.flashget.AddAll(newLinks, '', "FlashGet3", 0,'');
+  if (this.version == '3.x') {
+    this.flashget.AddAll(newLinks, '', "FlashGet3", 0,'');
+  } else if(this.version == '1.x') {
+    this.flashget.AddUrlList(newLinks);
+  }
 }
 
 /*
@@ -207,7 +222,7 @@ downloaderManager.supportDownloader = [
   {name: 'qq_whirlwind', showName: 'menu_qq_whirlwind', showName2:'download_all_with_qq_whirlwind', progId: 'QQIEHelper.QQRightClick.2', privateLink: '', supportDownloadAll: true, image: 'images/icon_qq.png'},
   {name: 'emule', showName: 'menu_emule', showName2:'download_all_with_emule', progId: 'IE2EM.IE2EMUrlTaker', privateLink: 'ed2k://', supportDownloadAll: false, image: 'images/icon_emule.png'},
   {name: 'orbit', showName: 'menu_orbit', showName2:'download_all_with_orbit', progId: 'Orbitmxt.Orbit', privateLink: '', supportDownloadAll: true, image: 'images/icon_orbit.png'},
-  {name: 'idm', showName: 'menu_idm', showName2: 'download_all_with_idm', progId: 'DownlWithIDM.LinkProcessor', privateLink: '', supportDownloadAll: false, image: 'images/icon_orbit.png'},
+  {name: 'idm', showName: 'menu_idm', showName2: 'download_all_with_idm', progId: 'DownlWithIDM.LinkProcessor', privateLink: '', supportDownloadAll: false, image: 'images/icon_idm.png'},
   {name: 'chrome_downloader', showName: 'menu_chrome', isSystem: true, supportDownloadAll: false, image: 'images/icon_chrome.png'}
 ]
 
@@ -246,6 +261,10 @@ downloaderManager.getEnableDownloader = function(plugin) {
   var enableDownloader = [];
   for (var i = 0; i < downloaderManager.supportDownloader.length; i++) {
     var downloader = downloaderManager.supportDownloader[i];
+    if (downloader.name == 'flashget' && !plugin.CheckObject(downloader.progId)) {
+      if (plugin.CheckObject('JetCar.Netscape'))
+        enableDownloader.push(downloader);
+    }
     if (downloader.isSystem || plugin.CheckObject(downloader.progId)) {
       enableDownloader.push(downloader);
     }
