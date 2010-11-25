@@ -92,12 +92,7 @@ extend(Flashget, Downloader);
 
 Flashget.prototype.download = function() {
   var linkObj = Flashget.superClass.download.call(this);
-  if (this.version == '3.x') {
-    this.flashget.AddUrlEx(linkObj.url, linkObj.text, linkObj.pageUrl, "FlashGet3",'', 0, 3 );
-  } else if (this.version == '1.x') {
-    this.flashget.AddUrl(linkObj.url, linkObj.text, linkObj.pageUrl);
-  }
-
+  this.flashget.AddUrl(linkObj.url, linkObj.text, linkObj.pageUrl);
 }
 
 Flashget.prototype.downloadAll = function() {
