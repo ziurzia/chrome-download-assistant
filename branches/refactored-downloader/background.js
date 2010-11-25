@@ -51,7 +51,6 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
     });
     setTimeout(function() {
       eval(js);
-      chrome.tabs.executeScript(tabId, {code: 'npDownload.checkPageLink()'});
     }, 500);
  });
 
@@ -100,3 +99,4 @@ function contextMenuDownloadAll(title, downloader) {
     }
   }});
 }
+
