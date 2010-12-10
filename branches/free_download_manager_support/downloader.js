@@ -208,18 +208,19 @@ IDM.prototype.download = function() {
 }
 
 function FDM(link, plugin, progId, pageUrl) {
-	this.pageUrl = pageUrl;
-	FDM.superClass.constructor.apply(this, arguments);
-	this.fdm = this.createNpObjectInstance();
+  this.pageUrl = pageUrl;
+  FDM.superClass.constructor.apply(this, arguments);
 }
 extend(FDM, Downloader);
 FDM.prototype.download = function() {
-	var linkObj = FDM.superClass.download.call(this);
-	this.fdm.Url = linkObj.url;
-	this.fdm.Comment = linkObj.text;
-	this.fdm.Referer = linkObj.pageUrl;
-	this.fdm.Cookies = "";
-	this.fdm.AddDownload();
+  var linkObj = FDM.superClass.download.call(this);
+  this.progId = "WG.WGUrlReceiver";
+  this.fdm = this.createNpObjectInstance();
+  this.fdm.Url = linkObj.url;
+  this.fdm.Comment = linkObj.text;
+  this.fdm.Referer = linkObj.pageUrl;
+  this.fdm.Cookies = "";
+  this.fdm.AddDownload();
 }
 
 FDM.prototype.downloadAll = function() {
@@ -229,9 +230,9 @@ FDM.prototype.downloadAll = function() {
   this.fdm.Referer = this.pageUrl;
   this.fdm.Cookies = "";
   for (var i = 0; i < links.length; i++) {
-  	this.fdm.Url = links[i].url;
-  	this.fdm.Comment = links[i].text;
-  	this.fdm.AddUrlToList();
+    this.fdm.Url = links[i].url;
+    this.fdm.Comment = links[i].text;
+    this.fdm.AddUrlToList();
   }
   this.fdm.ShowAddUrlListDialog();
 }
@@ -279,7 +280,7 @@ downloaderManager.downloader = function(mode, link, plugin, pageUrl) {
       downloader = new IDM(link, plugin, 'DownlWithIDM.LinkProcessor', pageUrl);
       break;
     case 'fdm':
-    	downloader = new FDM(link, plugin, 'WG.WGUrlReceiver', pageUrl);
+      downloader = new FDM(link, plugin, 'WG.WGUrlReceiver', pageUrl);
       break;
   }
   return downloader;
