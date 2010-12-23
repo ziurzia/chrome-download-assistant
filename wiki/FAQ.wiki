@@ -1,0 +1,55 @@
+=== How to use this extension? ===
+Before using this extension, you need to have at lease one downloader installed, eg. FlashGet, Thunder, etc. You can change the default downloader to your favorite downloader in the option page, so that when you click on a downloadable link (we identify downloadable links from their file extensions), the default downloader will start. Or you can right click on any link in the page and choose a downloader from Download Helper menu to download that link. You can also right click on the blank area of the page and choose a downloader to download all links in the page.
+
+Q: 我如何使用这个扩展？
+
+A: 你需要先安装一些喜欢的下载器，如迅雷，快车等，然后安装这个扩展。在选项页面中，设置默认的下载器，这样当你用鼠标点击一些下载资源的时候（我们目前只是通过链接资源的后缀进行判断），我们就会使用默认的下载器进行下载。你也可以在该链接上点右键选择下载助手菜单进行下载。在页面的空白处点右键，可以进行下载所有链接的操作。
+
+=== How to change the default downloader? ===
+Select default downloader on the option page, and click on “Save & Close”.
+
+Q: 如何才能使用选择的默认下载器下载？
+
+A: 在Option页面中选择默认的下载器，点击保存并关闭按钮。
+
+=== I’ve changed the default downloader. Why did my download still go to the internal downloader instead of my default downloader? ===
+It’s because the link you clicked is not identified as a downloadable link. We identify downloadable links from their file extensions.
+
+Q: 为什么我设置了默认下载器，但还是使用chrome的内部下载？
+
+A: 这是因为你点击的链接没有被识别为可下载链接。目前我们是根据后缀名来识别可下载链接的。
+
+=== I’ve installed a new downloader. Why can’t I find it in Download Helper menu? ===
+Please try restarting your browser.
+
+Q: 为什么我安装了下载器，但是右键下载列表中没有出现下载器呢？
+
+A: 请尝试重启浏览器。
+
+=== Why can’t I sync this extension access multiple computers? ===
+This extension contains an NPAPI plugin, so it can’t be synced.
+
+Q: 我使用多台计算机，为什么其他扩展可以同步，而这个扩展不可以同步？
+
+A: 因为谷歌浏览器的限制，所有包含插件的扩展程序目前都不能进行同步。
+
+=== Why don’t you support using Internet Download Manager to download all links on the page? ===
+The COM interface Internet Download Manger provides is only applicable to IE, so we can’t use it.
+
+Q: 为什么下载全部链接中没有Internet Download Manager？
+
+A: 因为Internet Download Manager提供的COM接口只能针对IE来使用，所以我们不能进行支持。
+
+=== Can you provide an API for other extensions to execute Thunder? ===
+Yes. You can download our extension, unzip it, find download_helper.dll in the plugin directory, and use it as an NPAPI plugin in your extension. The MIMEType is “application/x-npdownload”. You can use CheckObject(prog_id) to check if a downloader has been installed. You can use CreateObject(prog_id) to create a downloader object, and call its functions to start download. Take Thunder for an example:
+
+Q:是否可以提供一个接口，让其他扩展也可以调用迅雷等下载器呢？
+
+A:可以的，我们提供的插件dll就可以实现这个要求。使用的方法非常简单：首先在扩展中加入这个download_helper.dll，MIMEType=‘application/x-npdownload’，你就可以使用这个CheckObject方法并且传入ProgID来检查是否存在下载器。你还可以使用CreateObject方法并传入ProgID来创建下载器对象，目前只支持一些简单类型的参数，字符串，数值，数值。以迅雷为例：
+<embed type='application/x-npdownload' id='obj1'></embed>
+<script language="javascript">
+var pluginobj = document.getElementById('obj1');
+var thunderobj = pluginobj.CreateObject("ThunderAgent.Agent");
+thunderobj.AddTask(url, filename, '', comments, referurl, -1, 0, -1);
+thunderobj.CommitTasks();
+</script>
