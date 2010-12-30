@@ -94,12 +94,11 @@
       i18nReplace('downloader', 'downloader');
       i18nReplace('disableMenu', 'menu_disable');
       i18nReplace('saveAndClose', 'save_and_close');
-      if (bg.useContextMenuAPI) {
-        document.getElementById('contextMenuItem').style.display = 'none';
-      }
       bg.updateDownloaders();
       createDownloaderOption(document.getElementById('downloaderOption'));
-      if (!eval(localStorage['contextMenu'])) {
+      if (bg.useContextMenuAPI) {
+        document.getElementById('contextMenuItem').style.display = 'none';
+      } else if (!eval(localStorage['contextMenu'])) {
         checkboxContextMenu.checked = true;
       }
     }
