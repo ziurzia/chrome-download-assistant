@@ -17,7 +17,7 @@
 因为Internet Download Manager提供的COM接口只能针对IE来使用，所以我们不能进行支持。
 
 === 是否可以提供一个接口，让其他扩展也可以调用迅雷等下载器呢？ ===
-可以的，我们提供的插件dll就可以实现这个要求。使用的方法非常简单：首先在扩展中加入这个download_helper.dll，MIMEType=‘application/x-npdownload’，你就可以使用这个!CheckObject方法并且传入ProgID来检查是否存在下载器。你还可以使用!CreateObject方法并传入ProgID来创建下载器对象，目前只支持一些简单类型的参数，字符串，数值，数值。以迅雷为例：
+可以的，我们提供的插件dll就可以实现这个要求。使用的方法非常简单：首先在扩展中加入这个download_helper.dll，MIMEType=‘application/x-npdownload’，你就可以使用这个!CheckObject方法并且传入ProgID来检查是否存在下载器。你还可以使用!CreateObject方法并传入ProgID来创建下载器对象。在调用下载器对象的方法时，目前只支持一些简单类型的参数，包括字符串，数值和数组。以迅雷为例：
 
 {{{
 <embed type='application/x-npdownload' id='obj1'></embed>
