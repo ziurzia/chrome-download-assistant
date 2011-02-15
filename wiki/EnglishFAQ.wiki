@@ -17,7 +17,7 @@ This extension contains an NPAPI plugin, so it can’t be synced.
 The COM interface Internet Download Manger provides is only applicable to IE, so we can’t use it.
 
 === Can you provide an API for other extensions to execute Thunder? ===
-Yes. You can download our extension, unzip it, find download_helper.dll in the plugin directory, and use it as an NPAPI plugin in your extension. The MIMEType is “application/x-npdownload”. You can use !CheckObject(prog_id) to check if a downloader has been installed. You can use !CreateObject(prog_id) to create a downloader object, and call its functions to start download. Take Thunder as an example:
+Yes. You can download our extension, unzip it, find download_helper.dll in the plugin directory, and use it as an NPAPI plugin in your extension. The MIMEType is “application/x-npdownload”. You can use !CheckObject(prog_id) to check if a downloader has been installed. You can use !CreateObject(prog_id) to create a downloader object, and call its functions to start download. Now we only support strings, integers and arrays as parameters when calling functions of the downloader object. Take Thunder as an example:
 
 {{{
 <embed type='application/x-npdownload' id='obj1'></embed>
